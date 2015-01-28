@@ -30,7 +30,7 @@ object Source {
     }
   }
   
-  def createDivider[R:Monoid](source:Observable[R], f: R => (Seq[R], R)): Observable[R] = {
+  def createDivider[R:Monoid, T](source:Observable[R], f: R => (Seq[T], R)): Observable[T] = {
     var buffer: R = implicitly[Monoid[R]].zero
 
     Observable[R] { observer =>
@@ -41,14 +41,6 @@ object Source {
       }
     }
   }
-
-//  def toJson[T](t:T):Map[String, Any] = ???
-
-//  def example() = {
-//    implicit val system = ActorSystem("test")
-//
-//    Source.createTcpSource(new InetSocketAddress("localhost", 10310)).aggregate { ??? }.map(toJson(_))
-//  }
 
 }
 

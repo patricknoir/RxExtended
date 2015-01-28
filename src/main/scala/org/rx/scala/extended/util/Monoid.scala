@@ -30,7 +30,7 @@ package object implicits {
 
   }
 
-  implicit class DivisibleObservable[T:Monoid](o:Observable[T]) {
-    def divide(f: T => (Seq[T], T)): Observable[T] = Source.createDivider(o, f)
+  implicit class DivisibleObservable[R:Monoid](o:Observable[T]) {
+    def divide[T](f: R => (Seq[T], R)): Observable[T] = Source.createDivider[R, T](o, f)
   }
 }
