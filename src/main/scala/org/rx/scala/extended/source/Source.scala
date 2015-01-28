@@ -30,7 +30,7 @@ object Source {
     }
   }
   
-  def createAggregator[R:Monoid](source:Observable[R], f: R => (Seq[R], R)): Observable[R] = {
+  def createDivider[R:Monoid](source:Observable[R], f: R => (Seq[R], R)): Observable[R] = {
     var buffer: R = implicitly[Monoid[R]].zero
 
     Observable[R] { observer =>

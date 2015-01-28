@@ -30,7 +30,7 @@ package object implicits {
 
   }
 
-  implicit class AggregableObservable[T:Monoid](o:Observable[T]) {
-    def aggregate(f: T => (Seq[T], T)): Observable[T] = Source.createAggregator(o, f)
+  implicit class DivisibleObservable[T:Monoid](o:Observable[T]) {
+    def divide(f: T => (Seq[T], T)): Observable[T] = Source.createDivider(o, f)
   }
 }
