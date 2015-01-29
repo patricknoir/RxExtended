@@ -44,7 +44,7 @@ package object implicits {
   }
 
   implicit class BufferedObservable[R:Monoid](o:Observable[R]) {
-    def storeMap[T](f: R => (Seq[T], R)): Observable[T] = Source.storeMap[R, T](o, f)
+    def storeMap[T](f: R => (Seq[T], Option[R])): Observable[T] = Source.storeMap[R, T](o, f)
   }
 
 }

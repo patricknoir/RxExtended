@@ -29,7 +29,7 @@ object Main {
 
     val jsonStream = tcp.map(_.decodeString("UTF-8")).storeMap(in => {
       val lines = in.split("\n").toSeq
-      if(in.endsWith("\n")) (lines, "") else (lines.dropRight(1), lines.last)
+      if(in.endsWith("\n")) (lines, None) else (lines.dropRight(1), Some(lines.last))
     }).map(toJson(_))
   }
 
@@ -63,7 +63,7 @@ A BufferedObserver can be built from an Observer[R] where R:Monoid.
 The BufferedObserver provides the following functions:
 
 ```scala
-def storeMap[T](f: R => (Seq[T], R): Observable[T]
+def storeMap[T](f: R => (Seq[T], Option[R]): Observable[T]
 ```
 
 The function 'f' has the following semantic:
@@ -71,7 +71,10 @@ The function 'f' has the following semantic:
 for each R element provided as input StoreMap will try to transform R into a Sequence of T, for each T in the sequence the new Observable[T]
 will emit an event of T to its observer.
 The second element of the output tuple of the function f is the "rest" from the tranformation operation, this will represent the part which will
-be stored within the observable and aggregated with the new R coming from the source Observer[R]. The BufferedObservable will merge the rest with
+be stored within the observable and aggregated with the new R coming from the source Observer[R].
+Note that the rest is an Option[R] because the f function might eventually not have a rest and return None, in this case the buffer will be set
+with the Monoid[R].zero element.
+The BufferedObservable will merge the rest with
 the new R event coming from the source Observer because R:Monoid so its define a function of type:
 ```scala
 def combine(R, R): R

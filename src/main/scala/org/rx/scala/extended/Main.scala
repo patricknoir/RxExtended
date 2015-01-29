@@ -19,7 +19,7 @@ object Main {
 
     val jsonStream = tcp.map(_.decodeString("UTF-8")).storeMap(in => {
       val lines = in.split("\n").toSeq
-      if(in.endsWith("\n")) (lines, "") else (lines.dropRight(1), lines.last)
+      if(in.endsWith("\n")) (lines, None) else (lines.dropRight(1), Some(lines.last))
     }).map(toJson(_))
   }
 

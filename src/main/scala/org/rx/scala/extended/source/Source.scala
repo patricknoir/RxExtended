@@ -30,14 +30,14 @@ object Source {
     }
   }
   
-  def storeMap[R:Monoid, T](source:Observable[R], f: R => (Seq[T], R)): Observable[T] = {
+  def storeMap[R:Monoid, T](source:Observable[R], f: R => (Seq[T], Option[R])): Observable[T] = {
     var buffer: R = implicitly[Monoid[R]].zero
 
     Observable[T] { observer =>
       source.doOnNext { r =>
         val (ts, rest) = f(buffer |+| r)
         ts foreach ( t => observer.onNext(t))
-        buffer = rest
+        buffer = rest.getOrElse(implicitly[Monoid[R]].zero)
       }
       source.doOnError( observer.onError)
       source.doOnCompleted( observer.onCompleted )
