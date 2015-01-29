@@ -8,19 +8,36 @@ Usage
 -----
 
 ```scala
+package org.rx.scala.extended
 
-def toJson[T](t:T):JsObject = ...
+import java.net.InetSocketAddress
+import org.rx.scala.extended.source.Source
+import akka.actor.ActorSystem
 
-  def main() = {
+import org.rx.scala.extended.util.implicits._
+
+/**
+ * Created by patrick on 29/01/15.
+ */
+object Main {
+
+
+  def simpleExample() = {
     implicit val system = ActorSystem("test")
 
-    val jsonStream = Source.createTcpSource(new InetSocketAddress("localhost", 10310)).storeMap[String] {
-      val elements: Seq[String] = _.decodeString("UTF-8").split("\n").toSeq
-      if(isLastComplete(elements)) (elements, ByteString())
-      else (elements.dropRight(1), ByteString(elements.last))
-    }.map(toJson(_))
+    val tcp = Source.createTcpSource(new InetSocketAddress("localhost", 1234))
+
+    val jsonStream = tcp.map(_.decodeString("UTF-8")).storeMap(in => {
+      val lines = in.split("\n")
+      if(in.endsWith("\n")) (lines, "") else (lines.dropRight(1), lines.last)
+    }).map(toJson(_))
   }
 
+  def toJson(input:String): JsObject = ???
+
+}
+
+abstract class JsObject()
 ```
 
 Source

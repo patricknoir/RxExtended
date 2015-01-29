@@ -1,12 +1,12 @@
-package com.williamhill.paris.source
+package org.rx.scala.extended.source
 
 import java.net.InetSocketAddress
 
 import akka.actor.ActorSystem
 import akka.util.{Timeout, ByteString}
-import com.williamhill.paris.source.actor.{Subscribe, TcpSourceManager}
-import com.williamhill.paris.util.Monoid
-import com.williamhill.paris.util.implicits._
+import org.rx.scala.extended.source.actor.{Subscribe, TcpSourceManager}
+import org.rx.scala.extended.util.Monoid
+import org.rx.scala.extended.util.implicits._
 import rx.lang.scala.{Subscription, Observable}
 import akka.pattern.ask
 

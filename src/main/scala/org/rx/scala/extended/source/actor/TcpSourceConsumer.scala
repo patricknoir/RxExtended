@@ -1,4 +1,4 @@
-package com.williamhill.paris.source.actor
+package org.rx.scala.extended.source.actor
 
 import akka.actor.{Props, Actor, ActorLogging}
 import akka.event.LoggingReceive

@@ -1,4 +1,4 @@
-package com.williamhill.paris.util
+package org.rx.scala.extended.util
 
 /**
  * Created by patrick on 28/01/15.
