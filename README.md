@@ -63,7 +63,7 @@ A BufferedObserver can be built from an Observer[R] where R:Monoid.
 The BufferedObserver provides the following functions:
 
 ```scala
-def storeMap[T](f: R => (Seq[T], Option[R]): Observable[T]
+def storeMap[T](f: R => (Seq[T], Option[R])): Observable[T]
 ```
 
 The function 'f' has the following semantic:
