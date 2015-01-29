@@ -42,7 +42,7 @@ abstract class JsObject()
 
 Source
 ------
-The library provide a Source object which can be used to create observable from different source.
+The library provide a Source object which can be used to create observable from different sources.
 
 Source Methods:
 
