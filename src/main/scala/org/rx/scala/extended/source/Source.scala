@@ -39,6 +39,8 @@ object Source {
         ts foreach ( t => observer.onNext(t))
         buffer = rest
       }
+      source.doOnError( observer.onError)
+      source.doOnCompleted( observer.onCompleted )
     }
   }
 
