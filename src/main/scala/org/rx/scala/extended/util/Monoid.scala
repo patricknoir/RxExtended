@@ -14,9 +14,9 @@ trait Monoid[T] {
 
 object Monoid {
 
-  implicit val byteStringMonoid = new Monoid[ByteString] {
-    val zero = ByteString()
-    def combine(b1:ByteString, b2:ByteString): ByteString = b1 ++ b2
+  implicit def seqMonoid[T] = new Monoid[Seq[T]] {
+    val zero = Nil
+    def combine(s1: Seq[T], s2: Seq[T]): Seq[T] = s1 ++ s2
   }
 
 }
