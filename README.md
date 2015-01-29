@@ -28,7 +28,7 @@ object Main {
     val tcp = Source.createTcpSource(new InetSocketAddress("localhost", 1234))
 
     val jsonStream = tcp.map(_.decodeString("UTF-8")).storeMap(in => {
-      val lines = in.split("\n")
+      val lines = in.split("\n").toSeq
       if(in.endsWith("\n")) (lines, "") else (lines.dropRight(1), lines.last)
     }).map(toJson(_))
   }
