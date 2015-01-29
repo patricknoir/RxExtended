@@ -4,7 +4,7 @@ import java.net.InetSocketAddress
 
 import akka.actor.{Props, ActorRef, Actor, ActorLogging}
 import akka.event.LoggingReceive
-import akka.io.Tcp.{Received, CommandFailed, Connect}
+import akka.io.Tcp.{Connected, Received, CommandFailed, Connect}
 import akka.io.{IO, Tcp}
 import akka.util.ByteString
 import rx.lang.scala.Notification.{OnError, OnNext}
@@ -16,9 +16,11 @@ case object InitConnection
  */
 class TcpSourceConnection(address:InetSocketAddress, manager: ActorRef) extends Actor with ActorLogging {
 
+  import context.system
+
   val io = IO(Tcp)
 
-  def init() = {
+  def init(): Unit = {
     io ! Connect(address)
     context become receive
   }
@@ -29,7 +31,7 @@ class TcpSourceConnection(address:InetSocketAddress, manager: ActorRef) extends 
       log.error(s"error while connecting to $address")
       manager ! OnError(new Exception(s"error while connecting to $address"))
       context stop self
-    case Connect(remote, local) =>
+    case Connected(remote, local) =>
       val connection = sender
       log.debug(s"connected to $remote")
       context become processing(connection)
